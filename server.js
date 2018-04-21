@@ -2,7 +2,7 @@ var express = require('express'),
     app = express(),
     bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
-    cors = require('cors'),
+    //cors = require('cors'),
     UserRegistration = require('./models/userRegistration'),
     bodyParser = require('body-parser');
 
@@ -10,7 +10,7 @@ const nodemailer = require('nodemailer'),
     fs = require('fs');
 //busboyBodyParser = require('busboy-body-parser');
 
-app.use(cors())
+//app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 //app.use(busboyBodyParser({ limit: '10mb' }));
