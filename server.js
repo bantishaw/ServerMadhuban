@@ -542,9 +542,8 @@ app.post('/getAddtoCartData', function (request, response) {
                     }
                     order.push(product)
                 })
-                var now = new Date();
                 let myCartObject = {
-                    "date_of_order_placing": dateFormat(now, " mmmm dS, yyyy"),
+                    "date_of_order_placing": dateFormat(request.body.timeStamp, " dS mmmm, yyyy"),
                     "total_amount": result[0].total_amount,
                     "order_descriptiion": order
                 };
