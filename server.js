@@ -605,6 +605,17 @@ app.post('/getAddtoCartData', function (request, response) {
     })
 })
 
+// Function to deactivate the User account
+app.post('/deactivateUserAccount', function (request, response) {
+    databaseConnectivity.collection('UserRegistrations').remove( request.body, function (error, deleteUserAccount) {
+        if (error) {
+            throw error;
+        } else {
+            console.log("User Account is deleted")
+            response.json({ "response": "success", "data": "Your Account is successfully deactivated. Please wait while you are getting redirected..." })
+        }
+    })
+})
 
 app.listen(process.env.PORT || 5000)
 console.log("Running on port 5000") 
