@@ -192,8 +192,8 @@ var sendmail = function (message) {
                     port: 465,
                     secure: true,
                     auth: {
-                        user: 'bantitheforce@gmail.com',
-                        pass: 'Mylockbox@123'
+                        user: 'freshPoolIndia@gmail.com',
+                        pass: 'Aug@2017'
                     },
                     logger: false,
                     debug: false // include SMTP traffic in the logs
@@ -547,7 +547,6 @@ app.post('/getAddtoCartData', function (request, response) {
                     "total_amount": result[0].total_amount,
                     "order_descriptiion": order
                 };
-                // console.log("myCartObject", myCartObject)
                 databaseConnectivity.collection('UserOrders').find({ reference_email: request.body.reference_email }).toArray(function (error, userOrderResult) {
                     if (error) {
                         throw error;
@@ -579,6 +578,7 @@ app.post('/getAddtoCartData', function (request, response) {
                             // Create a new document
                             let insertObject = {
                                 "reference_email": request.body.reference_email,
+                                "customerName" : request.body.customerName,
                                 "myOrders": [myCartObject]
                             }
                             databaseConnectivity.collection('UserOrders').insert(insertObject, function (error, newResult) {
