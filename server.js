@@ -544,6 +544,7 @@ app.post('/getAddtoCartData', function (request, response) {
                     order.push(product)
                 })
                 let myCartObject = {
+                    "uniqueKey" : generator.generate(20),
                     "date_of_order_placing": dateFormat(request.body.timeStamp, " dS mmmm, yyyy"),
                     "total_amount": result[0].total_amount,
                     "order_descriptiion": order
