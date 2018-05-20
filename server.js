@@ -303,6 +303,7 @@ app.get('/getAboutUsMethod', function (request, response) {
 
 //get Menu service list of Home page
 app.post('/getHomePageServiceMenu', function (request, response) {
+    console.log("getHomePageServiceMenu", request.body)
     var homeArray = [];
     geocoder.reverse({ lat: request.body.latitude, lon: request.body.longitude }, function (error, geoResponse) {
        databaseConnectivity.collection('HomePageServiceMenu').find().toArray(function (error, result) {
@@ -311,6 +312,7 @@ app.post('/getHomePageServiceMenu', function (request, response) {
                 response.json({ "response": "failure", "data": "Please check your Interent connection and try again" })
             } else {
                 if (result.length > 0) {
+                    console.log("line 315",JSON.stringify(result))
                     result[0].HomeMenuService.map(function (individualObject) {
                       individualObject.collectionName.map(function (individualItem) {
                         if (individualItem.city === geoResponse[0].city) {
@@ -323,6 +325,7 @@ app.post('/getHomePageServiceMenu', function (request, response) {
                         }
                       })
                     })
+                    console.log("final result",homeArray)
                     response.json({ "response": "success", "data": homeArray })
                 } else {
                     response.json({ "response": "failure", "data": "Database is inaccessable. Please try later" })
