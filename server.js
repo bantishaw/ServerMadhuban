@@ -309,7 +309,7 @@ app.post('/getHomePageServiceMenu', function (request, response) {
             console.log('error occured while reversing Geocode error code: ' + error)
             response.json({ "response": "failure", "data": "Internal server error Please try again after sometime" })
         } else {
-            console.log("geoResponse..",geoResponse[0])
+            console.log("geoResponse..",geoResponse[0],geoResponse[0].administrativeLevels.level1long)
             databaseConnectivity.collection('HomePageServiceMenu').find().toArray(function (error, result) {
                 if (error) {
                     console.log(error)
@@ -317,10 +317,10 @@ app.post('/getHomePageServiceMenu', function (request, response) {
                 } else {
                     if (result.length > 0) {
                         console.log("line 315",JSON.stringify(result))
-                        console.log("geocity",geoResponse[0].city)
+                        console.log("geocity",geoResponse[0].administrativeLevels.level1long)
                         homeArray = result[0].HomeMenuService.map(function (individualObject) {  
                         var individualFilter = individualObject.collectionName.filter(function (individualItem) {
-                            return (individualItem.city === geoResponse[0].city)
+                            return (individualItem.city === geoResponse[0].administrativeLevels.level1long)
                           })
                         console.log("individualFilter",individualFilter)
                           return {
