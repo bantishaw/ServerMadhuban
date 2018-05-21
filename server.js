@@ -320,6 +320,7 @@ app.post('/getHomePageServiceMenu', function (request, response) {
                         var individualFilter = individualObject.collectionName.filter(function (individualItem) {
                             return (individualItem.city === geoResponse[0].city)
                           })
+                        console.log("individualFilter",individualFilter)
                           return {
                                 "img_path": individualObject.img_path,
                                 "service_name": individualObject.service_name,
