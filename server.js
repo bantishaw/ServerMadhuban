@@ -316,6 +316,7 @@ app.post('/getHomePageServiceMenu', function (request, response) {
                 } else {
                     if (result.length > 0) {
                         console.log("line 315",JSON.stringify(result))
+                        console.log("geocity",geoResponse[0].city)
                         homeArray = result[0].HomeMenuService.map(function (individualObject) {  
                         var individualFilter = individualObject.collectionName.filter(function (individualItem) {
                             return (individualItem.city === geoResponse[0].city)
