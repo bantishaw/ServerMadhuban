@@ -309,6 +309,7 @@ app.post('/getHomePageServiceMenu', function (request, response) {
             console.log('error occured while reversing Geocode error code: ' + error)
             response.json({ "response": "failure", "data": "Internal server error Please try again after sometime" })
         } else {
+            console.log("geoResponse..",geoResponse[0])
             databaseConnectivity.collection('HomePageServiceMenu').find().toArray(function (error, result) {
                 if (error) {
                     console.log(error)
