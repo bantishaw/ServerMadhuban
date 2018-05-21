@@ -347,6 +347,7 @@ app.get('/getHomePageSlidingImages', function (request, response) {
             console.log(error)
             response.json({ "response": "failure", "data": "Please check your Interent connection and try again" })
         } else {
+            console.log("result....",result.length,result)
             if (result.length > 0) {
                 response.json({ "response": "success", "data": result })
             } else {
