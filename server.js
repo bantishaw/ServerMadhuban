@@ -302,42 +302,27 @@ app.get('/getAboutUsMethod', function (request, response) {
 })
 
 //get Menu service list of Home page
-app.post('/getHomePageServiceMenu', function (request, response) {
-    var homeArray = [];
-    geocoder.reverse({ lat: request.body.latitude, lon: request.body.longitude }, function (error, geoResponse) {
+app.get('/getHomePageServiceMenu', function (request, response) {
+    databaseConnectivity.collection('HomePageServiceMenu').find().toArray(function (error, result) {
         if (error) {
-            console.log('error occured while reversing Geocode error code: ' + error)
-            response.json({ "response": "failure", "data": "Internal server error Please try again after sometime" })
+            console.log(error)
+            response.json({ "response": "failure", "data": "Please check your Interent connection and try again" })
         } else {
-            console.log("geoResponse..",geoResponse[0],geoResponse[0].administrativeLevels.level1long)
-            databaseConnectivity.collection('HomePageServiceMenu').find().toArray(function (error, result) {
-                if (error) {
-                    console.log(error)
-                    response.json({ "response": "failure", "data": "Please check your Internet connection and try again" })
-                } else {
-                    if (result.length > 0) {
-                        console.log("line 315",JSON.stringify(result))
-                        console.log("geocity",geoResponse[0].administrativeLevels.level1long)
-                        homeArray = result[0].HomeMenuService.map(function (individualObject) {  
-                        var individualFilter = individualObject.collectionName.filter(function (individualItem) {
-                            return (individualItem.city === geoResponse[0].administrativeLevels.level1long)
-                          })
-                        console.log("individualFilter",individualFilter)
-                          return {
-                                "img_path": individualObject.img_path,
-                                "service_name": individualObject.service_name,
-                                "collectionName": individualFilter[0].collection
-                              }
-                        })
-                        console.log("homeArray", homeArray)	
-                        response.json({ "response": "success", "data": homeArray })
-                    } else {
-                        response.json({ "response": "failure", "data": "Database is inaccessible. Please try later" })
+            if (result.length > 0) {
+                var homeArray = result[0].HomeMenuService.map(function (individualObject) {
+                    return {
+                        "img_path": individualObject.img_path,
+                        "service_name": individualObject.service_name,
+                        "collectionName": individualObject.collectionName[0].collection,
+                        "message" : individualObject.collectionName[0].message
                     }
-                }
-            })
+                })
+                response.json({ "response": "success", "data": homeArray })
+            } else {
+                response.json({ "response": "failure", "data": "Database is inaccessable. Please try later" })
+            }
         }
-    });
+    })
 })
 
 //get path of images stored in mongoDB
@@ -1462,6 +1447,34 @@ app.get('/getUserListToWhomeWeHavetoContact', function (request, response) {
         }
     })
 })
+
+app.post('/updateUserLocation', function (request, response) {
+    console.log(request.body)
+    databaseConnectivity.collection('HomePageServiceMenu').find().toArray(function (error, result) {
+        if (error) {
+            console.log(error)
+            response.json({ "response": "failure", "data": "Please check your Internet connection and try again" })
+        } else {
+            if (result.length > 0) {
+                console.log("line 315",JSON.stringify(result))
+                homeArray = result[0].HomeMenuService.map(function (individualObject) {  
+                var individualFilter = individualObject.collectionName.filter(function (individualItem) {
+                    return (individualItem.city === request.body.location)
+                  })
+                  return {
+                        "img_path": individualObject.img_path,
+                        "service_name": individualObject.service_name,
+                        "collectionName": individualFilter[0].collection,
+                        "message" : individualFilter[0].message
+                      }
+                })
+                response.json({ "response": "success", "data": homeArray })
+            } else {
+                response.json({ "response": "failure", "data": "Database is inaccessible. Please try later" })
+            }
+        }
+    })
+}) 
 
 app.listen(process.env.PORT || 5000)
 console.log("Running on port 5000") 
