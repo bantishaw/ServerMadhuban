@@ -314,7 +314,8 @@ app.get('/getHomePageServiceMenu', function (request, response) {
                         "img_path": individualObject.img_path,
                         "service_name": individualObject.service_name,
                         "collectionName": individualObject.collectionName[0].collection,
-                        "message" : individualObject.collectionName[0].message
+                        "message" : individualObject.collectionName[0].message,
+						"city" : individualObject.collectionName[0].city
                     }
                 })
                 response.json({ "response": "success", "data": homeArray })
@@ -1456,17 +1457,18 @@ app.post('/updateUserLocation', function (request, response) {
             response.json({ "response": "failure", "data": "Please check your Internet connection and try again" })
         } else {
             if (result.length > 0) {
-                console.log("line 315",JSON.stringify(result))
-                homeArray = result[0].HomeMenuService.map(function (individualObject) {  
-                var individualFilter = individualObject.collectionName.filter(function (individualItem) {
-                    return (individualItem.city === request.body.location)
-                  })
-                  return {
+                console.log("line 315", JSON.stringify(result))
+                homeArray = result[0].HomeMenuService.map(function (individualObject) {
+                    var individualFilter = individualObject.collectionName.filter(function (individualItem) {
+                        return (individualItem.city === request.body.location)
+                    })
+                    return {
                         "img_path": individualObject.img_path,
                         "service_name": individualObject.service_name,
                         "collectionName": individualFilter[0].collection,
-                        "message" : individualFilter[0].message
-                      }
+                        "message": individualFilter[0].message,
+                        "city": individualFilter[0].city
+                    }
                 })
                 response.json({ "response": "success", "data": homeArray })
             } else {
