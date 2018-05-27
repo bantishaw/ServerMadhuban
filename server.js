@@ -94,7 +94,7 @@ app.post('/newUserSignUp', function (request, response) {
                             to: request.body.name + '<' + request.body.email + '>',
                             subject: 'Welcome to FreshPool India',
                             html:
-                                '<p>We are looking forward to assist you to find the best Catering. To avail our best services , Please login now with your credentials. <br/></p>',
+                                "<p> We are excited to welcome you on FreshPool. Log in with your credentials and start shopping. We hope to give you a wonderful experience at FreshPool. Stay happy and stay fresh.<br/></p>",
                         };
                         // Activating send mail function to send mail to new users
                         sendmail(message);
