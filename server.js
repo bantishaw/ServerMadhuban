@@ -327,18 +327,23 @@ app.get('/getHomePageServiceMenu', function (request, response) {
 })
 
 //get path of images stored in mongoDB
-app.get('/getHomePageSlidingImages', function (request, response) {
-    databaseConnectivity.collection('HomePageSlidingImages').find().toArray(function (error, result) {
+app.post('/getHomePageSlidingImages', function (request, response) {
+    databaseConnectivity.collection('HomePageSlidingImages').find().toArray(function (error, menuResult) {
         if (error) {
             console.log(error)
             response.json({ "response": "failure", "data": "Please check your Interent connection and try again" })
         } else {
-            console.log("result....",result.length,result)
-            if (result.length > 0) {
-                response.json({ "response": "success", "data": result })
-            } else {
-                response.json({ "response": "failure", "data": "Database is inaccessable. Please try later" })
-            }
+			databaseConnectivity.collection('UserRegistrations').find({ email: request.body.email}).toArray(function (error, result) {
+				if (error) {
+					throw error;
+				} else {
+					if (result.length > 0) {
+						response.json({ "response": "success", "data": menuResult, "settingsInformation": result })
+					} else {
+						response.json({ "response": "failure", "data": "Database is inaccessable. Please try later" })
+					}
+				}
+			})
         }
     })
 })
@@ -1479,4 +1484,4 @@ app.post('/updateUserLocation', function (request, response) {
 }) 
 
 app.listen(process.env.PORT || 5000)
-console.log("Running on port 5000") 
+console.log("Running on port 5000")
